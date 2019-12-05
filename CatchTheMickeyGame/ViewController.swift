@@ -23,9 +23,32 @@ class ViewController: UIViewController {
     @IBOutlet weak var mickey8: UIImageView!
     @IBOutlet weak var mickey9: UIImageView!
     
+    var score = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        scoreLabel.text = "Score: \(score)"
+        addRecognizer()
+        
+        
+        
+        
+    }
+    
+    @objc func increaseScore(){
+        score += 1
+        scoreLabel.text = "Score: \(score)"
+    }
+    
+    func addRecognizer(){
+        let images = [mickey1, mickey2, mickey3, mickey4, mickey5, mickey6, mickey7, mickey8, mickey9]
+        for image in images {
+            image?.isUserInteractionEnabled = true
+            let recognizer = UITapGestureRecognizer(target: self, action: #selector(increaseScore))
+            image?.addGestureRecognizer(recognizer)
+        }
+        
     }
 
 
