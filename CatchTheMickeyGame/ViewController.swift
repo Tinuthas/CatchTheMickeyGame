@@ -32,15 +32,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         images = [mickey1, mickey2, mickey3, mickey4, mickey5, mickey6, mickey7, mickey8, mickey9]
-        scoreLabel.text = "Score: \(score)"
         addRecognizer()
-        
-        //Timers
-        counter = 10
-        timeLabel.text = "\(counter)"
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countDown), userInfo: nil, repeats: true)
-        hideMickey()
-        hideTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(hideMickey), userInfo: nil, repeats: true)
+        initValues()
     }
     
     @objc func increaseScore(){
@@ -64,6 +57,7 @@ class ViewController: UIViewController {
             let okButton = UIAlertAction(title: "OK", style: UIAlertAction.Style.cancel, handler: nil)
             let replayButton = UIAlertAction(title: "Replay", style: UIAlertAction.Style.default) { (UIAlertAction) in
                  // replay function
+                self.initValues()
             }
             alert.addAction(okButton)
             alert.addAction(replayButton)
@@ -89,6 +83,19 @@ class ViewController: UIViewController {
         
         let random = Int(arc4random_uniform(UInt32(images.count - 1)))
         images[random].isHidden = false
+    }
+    
+    func initValues(){
+        //Score
+        score = 0
+        scoreLabel.text = "Score: \(score)"
+        
+        //Timers
+        counter = 10
+        timeLabel.text = "\(counter)"
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countDown), userInfo: nil, repeats: true)
+        hideMickey()
+        hideTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(hideMickey), userInfo: nil, repeats: true)
     }
 
 
