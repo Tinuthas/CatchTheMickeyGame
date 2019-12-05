@@ -22,14 +22,16 @@ class ViewController: UIViewController {
     @IBOutlet weak var mickey7: UIImageView!
     @IBOutlet weak var mickey8: UIImageView!
     @IBOutlet weak var mickey9: UIImageView!
+    var images = [UIImageView]()
     
     var score = 0
     var timer = Timer()
     var counter = 0
+    var hideTimer = Timer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        images = [mickey1, mickey2, mickey3, mickey4, mickey5, mickey6, mickey7, mickey8, mickey9]
         scoreLabel.text = "Score: \(score)"
         addRecognizer()
         
@@ -37,7 +39,8 @@ class ViewController: UIViewController {
         counter = 10
         timeLabel.text = "\(counter)"
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countDown), userInfo: nil, repeats: true)
-        
+        hideMickey()
+        hideTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(hideMickey), userInfo: nil, repeats: true)
     }
     
     @objc func increaseScore(){
@@ -50,6 +53,11 @@ class ViewController: UIViewController {
         timeLabel.text = "\(counter)"
         if counter == 0{
             timer.invalidate()
+            hideTimer.invalidate()
+            
+            for image in images {
+                image.isHidden = true
+            }
             
             // Alert
             let alert = UIAlertController(title: "Time's Up", message: "Do you want to play again?", preferredStyle: UIAlertController.Style.alert)
@@ -65,13 +73,22 @@ class ViewController: UIViewController {
     }
     
     func addRecognizer(){
-        let images = [mickey1, mickey2, mickey3, mickey4, mickey5, mickey6, mickey7, mickey8, mickey9]
+        
         for image in images {
-            image?.isUserInteractionEnabled = true
+            image.isUserInteractionEnabled = true
             let recognizer = UITapGestureRecognizer(target: self, action: #selector(increaseScore))
-            image?.addGestureRecognizer(recognizer)
+            image.addGestureRecognizer(recognizer)
         }
         
+    }
+    
+    @objc func hideMickey(){
+        for image in images {
+            image.isHidden = true
+        }
+        
+        let random = Int(arc4random_uniform(UInt32(images.count - 1)))
+        images[random].isHidden = false
     }
 
 
